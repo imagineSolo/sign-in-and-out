@@ -1,4 +1,4 @@
-.signin-form-container {
+.sign-form-container {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -8,9 +8,14 @@
     transform: translate(-50%, -50%);
     background-color: rgb(242, 243, 255);
     border: 1px solid rgb(118, 118, 194);
-    border-radius: 4px;
-    width: 50%;
+    border-radius: 5px;
+    width: 30%;
     padding: 20px 0;
+    }
+
+    .sign-form-header {
+        margin: 10px;
+    }
 
     .sign-form-inputs {
         display: flex;
@@ -19,10 +24,20 @@
         width: 100%;
     }
 
+        .sign-form-text-field {
+            margin: 5px;
+            width: 50%;
+            background-color: white;
+        }
+
     .sign-form-buttons {
         display: flex;
         justify-content: space-between;
         width: 50%;
         margin-top: 10px;
     }
-}
+
+        .sign-form-button {
+            border: 1px solid rgb(118, 118, 194);
+        }
+

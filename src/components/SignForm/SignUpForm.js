@@ -1,34 +1,39 @@
-import React, { useState } from 'react';
+import React from 'react';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 
-import './SignUpForm.scss'
+import './SignForm.scss'
 
-const SignUpForm = () => {
-  // const [userName, setUserName] = useState('');
+const SignUpForm = ({switchToSignIn}) => {
 
   return (
-    <div className="signup-form-container">
-        <Typography variant='h5' style={{ margin: '10px' }}>SIGN UP</Typography>
+    <div className="sign-form-container">
+        <Typography variant='h5' className="sign-form-header">SIGN UP</Typography>
         <div className="sign-form-inputs">
-         <TextField style={{ margin: '5px', width: '50%', backgroundColor: 'white' }}
+         <TextField className="sign-form-text-field"
           required
           id="name-required"
           label="Name"
         />
-        <TextField style={{ margin: '5px', width: '50%', backgroundColor: 'white' }}
+        <TextField className="sign-form-text-field"
           required
           id="surname-required"
           label="Surname"
         />
-        <TextField style={{ margin: '5px', width: '50%', backgroundColor: 'white' }}
+        <TextField className="sign-form-text-field"
+          required
+          id="username-required"
+          label="E-mail"
+          type="email"
+        />
+        <TextField className="sign-form-text-field"
           id="password"
           label="Password"
           type="password"
           autoComplete="current-password"
         />
-        <TextField style={{ margin: '5px', width: '50%', backgroundColor: 'white' }}
+        <TextField className="sign-form-text-field"
           id="password-confirm"
           label="Confirm Password"
           type="password"
@@ -36,11 +41,13 @@ const SignUpForm = () => {
         />
         </div>
         <div className="sign-form-buttons">
-        <Button style={{ border: '1px solid rgb(118, 118, 194)'}}>
-          Save
-        </Button>
-        <Button style={{ border: '1px solid rgb(118, 118, 194)'}}>
+        <Button
+          className="sign-form-button"
+          onClick={switchToSignIn}>
           Cancel
+        </Button>
+        <Button className="sign-form-button">
+          Save
         </Button>
         </div>
     </div>

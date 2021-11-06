@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import SignInForm from './components/SignInForm/SignInForm'
-import SignUpForm from './components/SignUpForm/SignUpForm'
+import SignInForm from './components/SignForm/SignInForm'
+import SignUpForm from './components/SignForm/SignUpForm'
 import './MainPageComponent.scss';
 
 function MainPageComponent() {
@@ -10,11 +10,15 @@ function MainPageComponent() {
     setIsSignIn(false)
   }
 
+  const switchToSignInHandler = () => {
+    setIsSignIn(true)
+  }
+
   return (
     <div className="main-page-component">
       {isSignIn ?
         <SignInForm switchToSignUp={switchToSignUpHandler} /> :
-        <SignUpForm/>}
+        <SignUpForm switchToSignIn={switchToSignInHandler} />}
     </div>
   );
 }

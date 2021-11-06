@@ -3,21 +3,21 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 
-import './SignInForm.scss'
+import './SignForm.scss'
 
 const SignInForm = ({switchToSignUp}) => {
 
   return (
-    <div className="signin-form-container">
-        <Typography variant='h5' style={{ margin: '10px' }}>SIGN IN</Typography>
+    <div className="sign-form-container">
+        <Typography variant='h5' className="sign-form-header">SIGN IN</Typography>
         <div className="sign-form-inputs">
-        <TextField style={{ margin: '5px', width: '50%', backgroundColor: 'white' }}
+        <TextField className="sign-form-text-field"
           required
           id="username-required"
           label="E-mail"
           type="email"
         />
-        <TextField style={{ margin: '5px', width: '50%', backgroundColor: 'white' }}
+        <TextField className="sign-form-text-field"
           id="password"
           label="Password"
           type="password"
@@ -25,11 +25,11 @@ const SignInForm = ({switchToSignUp}) => {
         />
         </div>
         <div className="sign-form-buttons">
-        <Button style={{ border: '1px solid rgb(118, 118, 194)'}}>
+        <Button className="sign-form-button">
           SIGN IN
         </Button>
         <Button
-          style={{ border: '1px solid rgb(118, 118, 194)'}}
+          className="sign-form-button"
           onClick={switchToSignUp}>
           SIGN UP
         </Button>

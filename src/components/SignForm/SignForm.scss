@@ -9,9 +9,9 @@
     background-color: rgb(242, 243, 255);
     border: 1px solid rgb(118, 118, 194);
     border-radius: 5px;
-    width: 30%;
+    width: 40%;
     padding: 20px 0;
-    }
+
 
     .sign-form-header {
         margin: 10px;
@@ -22,22 +22,38 @@
         flex-direction: column;
         align-items: center;
         width: 100%;
-    }
 
         .sign-form-text-field {
-            margin: 5px;
-            width: 50%;
+            width: 60%;
             background-color: white;
         }
+    }
 
-    .sign-form-buttons {
+    .sign-in-form-buttons {
         display: flex;
+        flex-direction: column;
         justify-content: space-between;
         width: 50%;
         margin-top: 10px;
-    }
 
         .sign-form-button {
-            border: 1px solid rgb(118, 118, 194);
+            background-color: #282c34;
+            border: 1px solid rgb(106, 106, 177);
+            color: rgb(252, 252, 252);
+            margin: 5px;
         }
+    }
 
+    .sign-up-form-buttons {
+        display: flex;
+        justify-content: space-between;
+        width: 60%;
+        margin-top: 10px;
+
+        .sign-form-button {
+            background-color: #282c34;
+            border: 1px solid rgb(106, 106, 177);
+            color: rgb(252, 252, 252);
+        }
+    }
+}

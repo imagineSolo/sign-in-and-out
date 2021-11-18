@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
@@ -15,32 +16,37 @@ const SignUpForm = ({switchToSignIn}) => {
           required
           id="name-required"
           label="Name"
+          margin="dense"
         />
         <TextField className="sign-form-text-field"
           required
           id="surname-required"
           label="Surname"
+          margin="dense"
         />
         <TextField className="sign-form-text-field"
           required
           id="username-required"
           label="E-mail"
           type="email"
+          margin="dense"
         />
         <TextField className="sign-form-text-field"
           id="password"
           label="Password"
           type="password"
           autoComplete="current-password"
+          margin="dense"
         />
         <TextField className="sign-form-text-field"
           id="password-confirm"
           label="Confirm Password"
           type="password"
           autoComplete="current-password"
+          margin="dense"
         />
         </div>
-        <div className="sign-form-buttons">
+        <div className="sign-up-form-buttons">
         <Button
           className="sign-form-button"
           onClick={switchToSignIn}>
@@ -55,3 +61,7 @@ const SignUpForm = ({switchToSignIn}) => {
 }
 
 export default SignUpForm
+
+SignUpForm.propTypes = {
+  switchToSignIn: PropTypes.func
+}

@@ -7,6 +7,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import Fade from '@mui/material/Fade';
 import { toast } from 'react-toastify';
+import { isValidEmail, isValidPassword } from '../../utilities/validation'
 
 import './SignForm.scss'
 
@@ -25,12 +26,6 @@ const SignInForm = ({switchToSignUp}) => {
     const { value, id } = event.target
 
     setFields({ ...fields, [id]: value })
-
-    if (!value) {
-      setErrors({ ...errors, [id]: true })
-    } else {
-      setErrors({ ...errors, [id]: false })
-    }
   }
 
   const handleSubmit = () => {
@@ -42,49 +37,32 @@ const SignInForm = ({switchToSignUp}) => {
           email: '',
           password: '',
         })
-        alert('Login succesful')
+        toast.success('Login succesful')
       }, 3000)
     }
   }
 
   const validate = () => {
-      const { email, password } = fields
-      const errors = {}
-      let isValid = true
+    const { email, password } = fields
+    const errors = {}
 
-      if (!email) {
-        isValid = false
-        errors["email"] = true
-      }
+    errors.email = !isValidEmail(email)
+    errors.password = !isValidPassword(password)
 
-      if (typeof email !== "undefined") {
+    if (errors.email) {
+      toast.error("Incorrect email")
+    }
 
-        const emailRegex = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i)
-        if (!emailRegex.test(email)) {
-          isValid = false
-          toast.error('Incorrect email')
-          errors["email"] = true
-        }
-      }
+    if (errors.password) {
+      toast.error(
+        "Password must contain at least 8 characters, capital letter and special character"
+      )
+    }
 
-      if (!password) {
-        isValid = false
-        errors["password"] = true
-      }
+    setErrors(errors)
 
-      if (typeof password !== "undefined") {
-
-        const passwordRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})")
-        if (!passwordRegex.test(password)) {
-          isValid = false
-          toast.error('Password must contain at least 8 characters, capital letter and special character')
-          errors["password"] = true
-        }
-      }
-
-      setErrors(errors)
-      return isValid
-  }
+    return !errors.email && !errors.password
+};
 
 
   return (
@@ -98,6 +76,7 @@ const SignInForm = ({switchToSignUp}) => {
           type="email"
           margin="dense"
           value={fields.email}
+          error={errors.email}
           onChange={handleInputChange}
         />
         <TextField className="sign-form-text-field"
@@ -107,6 +86,7 @@ const SignInForm = ({switchToSignUp}) => {
           margin="dense"
           value={fields.password}
           autoComplete="current-password"
+          error={errors.password}
           onChange={handleInputChange}
         />
         </div>

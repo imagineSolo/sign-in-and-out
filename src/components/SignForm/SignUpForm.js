@@ -3,8 +3,12 @@ import PropTypes from 'prop-types';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
+import Fade from '@mui/material/Fade';
 import { toast } from 'react-toastify';
 import './SignForm.scss'
+import { isValidEmail, isValidPassword } from '../../utilities/validation'
 
 const SignUpForm = ({ switchToSignIn }) => {
   const [fields, setFields] = useState({
@@ -21,21 +25,20 @@ const SignUpForm = ({ switchToSignIn }) => {
     password: false,
     confirmPassword: false
   })
+  const [loading, setLoading] = useState(false)
+
 
   const handleInputChange = (event) => {
     const { value, id } = event.target
 
     setFields({ ...fields, [id]: value })
-
-    if (!value) {
-      setErrors({ ...errors, [id]: true })
-    } else {
-      setErrors({ ...errors, [id]: false })
-    }
   }
 
   const handleSubmit = () => {
     if (validate()){
+      setLoading(true)
+      setTimeout(() => {
+        setLoading(false)
         setFields({
           name: '',
           surname: '',
@@ -43,68 +46,39 @@ const SignUpForm = ({ switchToSignIn }) => {
           password: '',
           confirmPassword: ''
         })
-        alert('Demo Form is submited')
+        toast.success('Account registered')
+      }, 3000)
     }
   }
 
   const validate = () => {
       const { name, surname, email, password, confirmPassword } = fields
       const errors = {}
-      let isValid = true
+      errors.email = !isValidEmail(email)
+      errors.password = !isValidPassword(password)
 
-      if (!name) {
-        isValid = false
-        errors["name"] = true
+      errors.name = name.trim() === ""
+
+      errors.surname = surname.trim() === ""
+
+      if (errors.email) {
+        toast.error("Incorrect email")
       }
 
-      if (!surname) {
-        isValid = false
-        errors["surname"] = true
+      if (errors.password) {
+        toast.error(
+          "Password must contain at least 8 characters, capital letter and special character"
+        )
       }
 
-      if (!email) {
-        isValid = false
-        errors["email"] = true
-      }
-
-      if (typeof email !== "undefined") {
-
-        const emailRegex = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i)
-        if (!emailRegex.test(email)) {
-          isValid = false
-          toast.error('Incorrect email')
-          errors["email"] = true
-        }
-      }
-
-      if (!password) {
-        isValid = false
-        errors["password"] = true
-      }
-
-      if (typeof password !== "undefined") {
-
-        const passwordRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})")
-        if (!passwordRegex.test(password)) {
-          isValid = false
-          toast.error('Password must contain at least 8 characters, capital letter and special character')
-          errors["password"] = true
-        }
-      }
-
-      if (typeof password !== "undefined" && typeof confirmPassword !== "undefined") {
-        console.log(password)
-        console.log(confirmPassword)
         if (password !== confirmPassword) {
-          isValid = false
           toast.error('Passwords don\'t match')
-          errors["confirmPassword"] = true
+          errors.confirmPassword = true
         }
-
-    }
 
       setErrors(errors)
-      return isValid
+
+      return !errors.name && !errors.surname && !errors.email && !errors.password && !errors.confirmPassword
   }
 
   return (
@@ -172,6 +146,17 @@ const SignUpForm = ({ switchToSignIn }) => {
           Save
         </Button>
         </div>
+        <Box sx={{ height: 40 }}>
+        <Fade
+          in={loading}
+          style={{
+            transitionDelay: loading ? '800ms' : '0ms',
+          }}
+          unmountOnExit
+        >
+          <CircularProgress />
+        </Fade>
+      </Box>
     </div>
   )
 }

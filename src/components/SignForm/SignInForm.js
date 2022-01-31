@@ -1,17 +1,15 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import CircularProgress from '@mui/material/CircularProgress';
-import Box from '@mui/material/Box';
-import Fade from '@mui/material/Fade';
-import { toast } from 'react-toastify';
+import React, { useState } from 'react'
+import Spinner from '../Spinner/Spinner'
+import PropTypes from 'prop-types'
+import TextField from '@mui/material/TextField'
+import Typography from '@mui/material/Typography'
+import Button from '@mui/material/Button'
+import { toast } from 'react-toastify'
 import { isValidEmail, isValidPassword } from '../../utilities/validation'
-
+import { signIn } from '../../firebase'
 import './SignForm.scss'
 
-const SignInForm = ({switchToSignUp}) => {
+const SignInForm = ({switchToSignUp, setLogin}) => {
   const [fields, setFields] = useState({
     email: '',
     password: '',
@@ -28,17 +26,23 @@ const SignInForm = ({switchToSignUp}) => {
     setFields({ ...fields, [id]: value })
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (validate()){
       setLoading(true)
-      setTimeout(() => {
-        setLoading(false)
+      try {
+        await signIn(fields.email, fields.password)
+        setTimeout(() => {
         setFields({
           email: '',
           password: '',
         })
+        setLoading(false)
+        setLogin()
         toast.success('Login succesful')
-      }, 3000)
+      }, 2000)
+      } catch(error){
+        toast.error(error.message)
+      }
     }
   }
 
@@ -62,7 +66,7 @@ const SignInForm = ({switchToSignUp}) => {
     setErrors(errors)
 
     return !errors.email && !errors.password
-};
+  }
 
 
   return (
@@ -93,7 +97,8 @@ const SignInForm = ({switchToSignUp}) => {
         <div className="sign-in-form-buttons">
         <Button
           className="sign-form-button"
-          onClick={handleSubmit}>
+          onClick={handleSubmit}
+          disabled={loading}>
           LOGIN
         </Button>
         <Typography
@@ -101,23 +106,14 @@ const SignInForm = ({switchToSignUp}) => {
           Don't have an account? <Button className="sign-form-sign-up-button">Sign up</Button>
         </Typography>
         </div>
-        <Box sx={{ height: 40 }}>
-        <Fade
-          in={loading}
-          style={{
-            transitionDelay: loading ? '800ms' : '0ms',
-          }}
-          unmountOnExit
-        >
-          <CircularProgress />
-        </Fade>
-      </Box>
+        <Spinner loading={loading}/>
     </div>
   )
 }
 
-export default SignInForm
-
 SignInForm.propTypes = {
-  switchToSignUp: PropTypes.func
+  switchToSignUp: PropTypes.func,
+  setLogin: PropTypes.func
 }
+
+export default SignInForm

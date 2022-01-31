@@ -1,14 +1,13 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import CircularProgress from '@mui/material/CircularProgress';
-import Box from '@mui/material/Box';
-import Fade from '@mui/material/Fade';
-import { toast } from 'react-toastify';
-import './SignForm.scss'
+import React, { useState } from 'react'
+import PropTypes from 'prop-types'
+import TextField from '@mui/material/TextField'
+import Typography from '@mui/material/Typography'
+import Button from '@mui/material/Button'
+import Spinner from '../Spinner/Spinner'
 import { isValidEmail, isValidPassword } from '../../utilities/validation'
+import { toast } from 'react-toastify'
+import { signUp } from '../../firebase'
+import './SignForm.scss'
 
 const SignUpForm = ({ switchToSignIn }) => {
   const [fields, setFields] = useState({
@@ -27,27 +26,30 @@ const SignUpForm = ({ switchToSignIn }) => {
   })
   const [loading, setLoading] = useState(false)
 
-
   const handleInputChange = (event) => {
     const { value, id } = event.target
-
     setFields({ ...fields, [id]: value })
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (validate()){
       setLoading(true)
-      setTimeout(() => {
-        setLoading(false)
-        setFields({
-          name: '',
-          surname: '',
-          email: '',
-          password: '',
-          confirmPassword: ''
-        })
-        toast.success('Account registered')
-      }, 3000)
+      try {
+          await signUp(fields.email, fields.password)
+          setLoading(false)
+          setFields({
+            name: '',
+            surname: '',
+            email: '',
+            password: '',
+            confirmPassword: ''
+          })
+          toast.success('Account registered')
+          switchToSignIn()
+      } catch(error){
+        toast.error(error.message)
+      }
+      setLoading(false)
     }
   }
 
@@ -83,9 +85,11 @@ const SignUpForm = ({ switchToSignIn }) => {
 
   return (
     <div className="sign-form-container">
-        <Typography variant='h5' className="sign-form-header">SIGN UP</Typography>
+        <Typography variant='h5' className="sign-form-header">
+          SIGN UP
+        </Typography>
         <div className="sign-form-inputs">
-         <TextField className="sign-form-text-field"
+        <TextField className="sign-form-text-field"
           required
           id="name"
           label="Name"
@@ -138,31 +142,21 @@ const SignUpForm = ({ switchToSignIn }) => {
         <Button
           className="sign-form-button"
           onClick={switchToSignIn}>
-          Cancel
+            Cancel
         </Button>
         <Button
           className="sign-form-button"
           onClick={handleSubmit}>
-          Save
+            Save
         </Button>
         </div>
-        <Box sx={{ height: 40 }}>
-        <Fade
-          in={loading}
-          style={{
-            transitionDelay: loading ? '800ms' : '0ms',
-          }}
-          unmountOnExit
-        >
-          <CircularProgress />
-        </Fade>
-      </Box>
+        <Spinner loading={loading} />
     </div>
   )
 }
 
-export default SignUpForm
-
 SignUpForm.propTypes = {
   switchToSignIn: PropTypes.func
 }
+
+export default SignUpForm

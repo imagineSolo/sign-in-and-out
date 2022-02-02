@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import Spinner from '../Spinner/Spinner'
-import Button from '@mui/material/Button'
+import Spinner from '../../common/Spinner'
+import Button from '../../common/Button'
 import { logout, useAuth } from '../../firebase'
 import { toast } from 'react-toastify'
 import PropTypes from 'prop-types'
@@ -26,10 +26,8 @@ const MainPage = ({setLogout}) => {
     return (
         <div>
             <h1>Logged in as: {currentUser?.email}</h1>
-            <Button onClick={handleLogout}>Logout</Button>
-            {loading &&
-                <Spinner loading={loading}/>
-            }
+            <Button secondary onClick={handleLogout}>Logout</Button>
+            {loading && <Spinner />}
         </div>
     )
 }

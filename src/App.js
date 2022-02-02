@@ -3,9 +3,23 @@ import SignInForm from './components/SignForm/SignInForm'
 import SignUpForm from './components/SignForm/SignUpForm'
 import MainPage from './components/MainPage/MainPage'
 import { ToastContainer } from 'react-toastify'
-
+import { createGlobalStyle } from 'styled-components'
+import theme from './utilities/themes'
 import 'react-toastify/dist/ReactToastify.css'
-import './App.scss'
+
+const GlobalStyle = createGlobalStyle`
+	body {
+		background: ${theme.bodyBackgroundColor};
+		min-height: 100vh;
+		margin: 0;
+		font-family: 'Open Sans';
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+	}
+`
 
 const App = () => {
   const [isSignIn, setIsSignIn] = useState(true)
@@ -28,8 +42,9 @@ const App = () => {
   }
 
   return (
-    <div className="main-page-component">
-      <ToastContainer autoClose={3000} />
+    <>
+    <GlobalStyle />
+    <ToastContainer autoClose={3000} />
       {!isLogged ? isSignIn ?
         <SignInForm
           switchToSignUp={switchToSignUpHandler}
@@ -38,8 +53,8 @@ const App = () => {
         <SignUpForm
           switchToSignIn={switchToSignInHandler}
         /> : <MainPage setLogout={setLogout}/>}
-    </div>
-  );
+    </>
+  )
 }
 
 export default App

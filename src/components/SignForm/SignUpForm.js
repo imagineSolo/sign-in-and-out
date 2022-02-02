@@ -1,13 +1,15 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import TextField from '@mui/material/TextField'
-import Typography from '@mui/material/Typography'
-import Button from '@mui/material/Button'
-import Spinner from '../Spinner/Spinner'
+import Form from '../../common/Form'
+import FormInputs from '../../common/FormInputs'
+import Header from '../../common/Header'
+import Input from '../../common/Input'
+import ButtonsWrapper from '../../common/ButtonsWrapper'
+import Button from '../../common/Button'
+import Spinner from '../../common/Spinner'
 import { isValidEmail, isValidPassword } from '../../utilities/validation'
 import { toast } from 'react-toastify'
 import { signUp } from '../../firebase'
-import './SignForm.scss'
 
 const SignUpForm = ({ switchToSignIn }) => {
   const [fields, setFields] = useState({
@@ -84,74 +86,71 @@ const SignUpForm = ({ switchToSignIn }) => {
   }
 
   return (
-    <div className="sign-form-container">
-        <Typography variant='h5' className="sign-form-header">
+    <>
+    <Form>
+        <Header>
           SIGN UP
-        </Typography>
-        <div className="sign-form-inputs">
-        <TextField className="sign-form-text-field"
+        </Header>
+        <FormInputs>
+        <Input className="sign-form-text-field"
           required
           id="name"
-          label="Name"
-          margin="dense"
+          placeholder="Name"
           value={fields.name}
           error={errors.name}
           onChange={handleInputChange}
         />
-        <TextField className="sign-form-text-field"
+        <Input className="sign-form-text-field"
           required
           id="surname"
-          label="Surname"
-          margin="dense"
+          placeholder="Surname"
           value={fields.surname}
           error={errors.surname}
           onChange={handleInputChange}
         />
-        <TextField className="sign-form-text-field"
+        <Input className="sign-form-text-field"
           required
           id="email"
-          label="E-mail"
+          placeholder="E-mail"
           type="email"
-          margin="dense"
           value={fields.email}
           error={errors.email}
           onChange={handleInputChange}
         />
-        <TextField className="sign-form-text-field"
+        <Input className="sign-form-text-field"
           id="password"
-          label="Password"
+          placeholder="Password"
           type="password"
           autoComplete="current-password"
-          margin="dense"
           value={fields.password}
           error={errors.password}
           onChange={handleInputChange}
         />
-        <TextField className="sign-form-text-field"
+        <Input className="sign-form-text-field"
           id="confirmPassword"
-          label="Confirm Password"
+          placeholder="Confirm Password"
           type="password"
           autoComplete="current-password"
-          margin="dense"
           value={fields.confirmPassword}
           error={errors.confirmPassword}
           onChange={handleInputChange}
         />
-        </div>
-        <div className="sign-up-form-buttons">
+        </FormInputs>
+        <ButtonsWrapper signup>
         <Button
-          className="sign-form-button"
+          type='button'
           onClick={switchToSignIn}>
             Cancel
         </Button>
         <Button
-          className="sign-form-button"
+          type='button'
           onClick={handleSubmit}>
             Save
         </Button>
-        </div>
-        <Spinner loading={loading} />
-    </div>
+        </ButtonsWrapper>
+    </Form>
+    {loading && <Spinner />}
+    </>
   )
 }
 

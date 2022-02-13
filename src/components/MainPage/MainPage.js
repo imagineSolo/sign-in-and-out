@@ -3,9 +3,8 @@ import Spinner from '../../common/Spinner'
 import Button from '../../common/Button'
 import { logout, useAuth } from '../../firebase'
 import { toast } from 'react-toastify'
-import PropTypes from 'prop-types'
 
-const MainPage = ({setLogout}) => {
+const MainPage = () => {
     const [loading, setLoading] = useState(false)
     const currentUser = useAuth()
 
@@ -13,12 +12,10 @@ const MainPage = ({setLogout}) => {
         setLoading(true)
         try {
             await logout()
-            setTimeout(() => {
-                setLogout()
                 setLoading(false)
                 toast.success('Logged out')
-            }, 2000)
         } catch {
+            setLoading(false)
             toast.error('Something went wrong!')
         }
     }
@@ -31,9 +28,5 @@ const MainPage = ({setLogout}) => {
         </div>
     )
 }
-
-MainPage.propTypes = {
-    setLogout: PropTypes.func
-  }
 
 export default MainPage

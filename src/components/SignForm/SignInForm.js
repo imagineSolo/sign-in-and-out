@@ -11,7 +11,7 @@ import { toast } from 'react-toastify'
 import { isValidEmail, isValidPassword } from '../../utilities/validation'
 import { signIn } from '../../firebase'
 
-const SignInForm = ({switchToSignUp, setLogin}) => {
+const SignInForm = ({ switchToSignUp }) => {
   const [fields, setFields] = useState({
     email: '',
     password: '',
@@ -33,16 +33,10 @@ const SignInForm = ({switchToSignUp, setLogin}) => {
       setLoading(true)
       try {
         await signIn(fields.email, fields.password)
-        setTimeout(() => {
-        setFields({
-          email: '',
-          password: '',
-        })
         setLoading(false)
-        setLogin()
         toast.success('Login succesful')
-      }, 2000)
       } catch(error){
+        setLoading(false)
         toast.error(error.message)
       }
     }
@@ -118,8 +112,7 @@ const SignInForm = ({switchToSignUp, setLogin}) => {
 }
 
 SignInForm.propTypes = {
-  switchToSignUp: PropTypes.func,
-  setLogin: PropTypes.func
+  switchToSignUp: PropTypes.func.isRequired,
 }
 
 export default SignInForm

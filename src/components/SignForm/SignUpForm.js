@@ -39,16 +39,10 @@ const SignUpForm = ({ switchToSignIn }) => {
       try {
           await signUp(fields.email, fields.password)
           setLoading(false)
-          setFields({
-            name: '',
-            surname: '',
-            email: '',
-            password: '',
-            confirmPassword: ''
-          })
           toast.success('Account registered')
           switchToSignIn()
       } catch(error){
+        setLoading(false)
         toast.error(error.message)
       }
       setLoading(false)

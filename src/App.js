@@ -1,12 +1,11 @@
 import React from 'react'
-import Authentication from './components/SignForm/Authentication'
+import Authentication from './components/SignForm/Authentication/Authentication'
 import { createGlobalStyle } from 'styled-components'
 import { ToastContainer } from 'react-toastify'
 import theme from './utilities/themes'
 import 'react-toastify/dist/ReactToastify.css'
 
 const App = () => {
-
   const GlobalStyle = createGlobalStyle`
   body {
     background: ${theme.bodyBackgroundColor};
@@ -23,9 +22,9 @@ const App = () => {
 
   return (
     <>
-    <GlobalStyle />
-    <ToastContainer autoClose={3000} />
-    <Authentication />
+      <GlobalStyle />
+      <ToastContainer autoClose={3000} />
+      <Authentication />
     </>
   )
 }
